@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="RecyclerViewData" parent="android:Widget.TextView">
+        <item name="android:textColor">#000000</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:alpha">0.87</item>
+        <item name="android:textSize">@dimen/text_size_rv</item>
+    </style>
+
 </resources>
