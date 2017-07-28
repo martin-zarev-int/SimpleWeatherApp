@@ -2,23 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:paddingTop="8dp"
+    android:orientation="horizontal"
     android:paddingLeft="@dimen/horizontal_margin"
-    android:paddingRight="@dimen/horizontal_margin"
-    android:orientation="horizontal">
+    android:paddingRight="@dimen/horizontal_margin">
 
     <TextView
         android:id="@+id/city_rv_item_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/RecyclerViewData"
+        style="@style/RecyclerViewMainData"
         android:text="City name"/>
 
     <TextView
         android:id="@+id/city_rv_item_degree"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/RecyclerViewData"
+        style="@style/RecyclerViewMainData"
         android:text="Degrees"/>
 
     <ProgressBar
@@ -26,6 +25,7 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:layout_weight="1"
         android:visibility="gone"/>
 

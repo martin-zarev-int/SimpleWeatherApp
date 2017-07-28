@@ -6,8 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.martinzarev.weatherapp.Models.Weather;
+import com.martinzarev.weatherapp.Models.DailyForecast;
 import com.martinzarev.weatherapp.R;
 
 import java.util.ArrayList;
@@ -16,41 +17,48 @@ import java.util.ArrayList;
  * Created by martin on 28.07.17.
  */
 
-public class AllCitiesRecyclerView extends RecyclerView.Adapter<AllCitiesRecyclerView.ViewHolder> {
+public class AllCitiesRecyclerView extends RecyclerView.Adapter<AllCitiesRecyclerView.AllViewHolder> {
 
     //The data for the RV
-    private ArrayList<Weather> cities;
+    private ArrayList<DailyForecast> dailyForecasts;
 
     //Context for inflater
     private Context context;
 
-    public AllCitiesRecyclerView(ArrayList<Weather> cities, Context context){
-        this.cities = cities;
+    public AllCitiesRecyclerView(ArrayList<DailyForecast> dailyForecasts, Context context){
+        this.dailyForecasts = dailyForecasts;
         this.context = context;
     }
 
     @Override
-    public AllCitiesRecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.city_rv_item,parent,false));
+    public AllCitiesRecyclerView.AllViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new AllViewHolder(LayoutInflater.from(context).inflate(R.layout.city_rv_item,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(AllCitiesRecyclerView.ViewHolder holder, int position) {
-        Weather currentCityWeather = cities.get(position);
+    public void onBindViewHolder(AllCitiesRecyclerView.AllViewHolder holder, int position) {
+        final DailyForecast currentDailyForecast = dailyForecasts.get(position);
 
-        holder.bindTo(currentCityWeather);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context,currentDailyForecast.getName(),Toast.LENGTH_LONG);
+            }
+        });
+
+        holder.bindTo(currentDailyForecast);
     }
 
     @Override
     public int getItemCount() {
-        return cities.size();
+        return dailyForecasts.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class AllViewHolder extends RecyclerView.ViewHolder{
 
         private TextView cityNameTV, cityDegreesTV;
 
-        public ViewHolder(View itemView) {
+        public AllViewHolder(View itemView) {
             super(itemView);
 
             //Init the views
@@ -59,9 +67,9 @@ public class AllCitiesRecyclerView extends RecyclerView.Adapter<AllCitiesRecycle
 
         }
 
-        void bindTo(final Weather currentCityWeather){
-            cityNameTV.setText(currentCityWeather.getCityName());
-            cityDegreesTV.setText(String.valueOf(currentCityWeather.getTemperature()));
+        void bindTo(final DailyForecast currentDailyForecast){
+            cityNameTV.setText(currentDailyForecast.getName());
+            cityDegreesTV.setText(String.valueOf(currentDailyForecast.getMain().getTemp()));
         }
     }
 }

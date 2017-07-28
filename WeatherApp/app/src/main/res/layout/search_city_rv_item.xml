@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/horizontal_margin"
+    android:paddingRight="@dimen/horizontal_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/search_city_rv_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/RecyclerViewMainData"
+            android:text="City name"/>
+
+        <TextView
+            android:id="@+id/search_city_rv_item_country"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/RecyclerViewAdditionalData"
+            android:text="Country name"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/search_city_rv_item_degree"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/RecyclerViewMainData"
+        android:layout_weight="2"
+        android:text="Degrees"/>
+
+    <ImageButton
+        android:id="@+id/search_city_rv_item_add_remove"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:src="@mipmap/fab_add"
+        android:background="#00000000"/>
+
+</LinearLayout>
