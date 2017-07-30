@@ -1,10 +1,12 @@
 package com.martinzarev.weatherapp.Models.Weather;
 
+import java.io.Serializable;
+
 /**
  * Created by martin on 28.07.17.
  */
 
-public class Main {
+public class Main implements Serializable {
 
     private double temp;
 

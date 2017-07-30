@@ -7,17 +7,20 @@ import com.martinzarev.weatherapp.Models.Weather.SystemSpecific;
 import com.martinzarev.weatherapp.Models.Weather.Weather;
 import com.martinzarev.weatherapp.Models.Weather.Wind;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Created by martin on 28.07.17.
  */
 
-public class DailyForecast {
+public class DailyForecast implements Serializable {
 
     private Coordinates coord;
 
     private SystemSpecific sys;
 
-    private Weather weather;
+    private ArrayList<Weather> weather;
 
     private Main main;
 
@@ -48,10 +51,10 @@ public class DailyForecast {
     }
 
     //Getters and setters for weather
-    public Weather getWeather(){
+    public ArrayList<Weather> getWeather(){
         return weather;
     }
-    public void setWeather(Weather weather){
+    public void setWeather(ArrayList<Weather> weather){
         this.weather = weather;
     }
 

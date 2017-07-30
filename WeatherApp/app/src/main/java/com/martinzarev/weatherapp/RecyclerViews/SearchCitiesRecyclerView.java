@@ -1,7 +1,10 @@
 package com.martinzarev.weatherapp.RecyclerViews;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.pm.ActivityInfoCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +15,9 @@ import android.widget.Toast;
 
 import com.martinzarev.weatherapp.Models.DailyForecast;
 import com.martinzarev.weatherapp.R;
+import com.martinzarev.weatherapp.SearchCitiesActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -59,7 +64,7 @@ public class SearchCitiesRecyclerView extends RecyclerView.Adapter<SearchCitiesR
     class SearchViewHolder extends RecyclerView.ViewHolder{
 
         private TextView cityNameTV, countryName, cityDegreesTV;
-        private ImageButton addRemoveButton;
+        private ImageButton addButton;
 
         public SearchViewHolder(View itemView) {
             super(itemView);
@@ -68,17 +73,28 @@ public class SearchCitiesRecyclerView extends RecyclerView.Adapter<SearchCitiesR
             cityNameTV = itemView.findViewById(R.id.search_city_rv_item_name);
             countryName = itemView.findViewById(R.id.search_city_rv_item_country);
             cityDegreesTV = itemView.findViewById(R.id.search_city_rv_item_degree);
-            addRemoveButton = itemView.findViewById(R.id.search_city_rv_item_add_remove);
+            addButton = itemView.findViewById(R.id.search_city_rv_item_add);
         }
 
-        void bindTo(final DailyForecast currentCityWeather){
-            cityNameTV.setText(currentCityWeather.getName());
-            countryName.setText(currentCityWeather.getSystemSpecific().getCountry());
-            cityDegreesTV.setText(String.valueOf(currentCityWeather.getMain().getTemp()));
+        void bindTo(final DailyForecast currentDailyForecast){
+            cityNameTV.setText(currentDailyForecast.getName());
+            countryName.setText(currentDailyForecast.getSystemSpecific().getCountry());
+            cityDegreesTV.setText(String.valueOf(currentDailyForecast.getMain().getTemp()));
+
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent returnInten = new Intent();
+                    returnInten.putExtra("new_city",currentDailyForecast);
+                    ((SearchCitiesActivity)context).setResult(Activity.RESULT_OK, returnInten);
+                    ((SearchCitiesActivity)context).finish();
+                }
+            });
         }
     }
 
     public void addData(ArrayList<DailyForecast> forecasts){
         dailyForecasts.addAll(forecasts);
+        notifyDataSetChanged();
     }
 }

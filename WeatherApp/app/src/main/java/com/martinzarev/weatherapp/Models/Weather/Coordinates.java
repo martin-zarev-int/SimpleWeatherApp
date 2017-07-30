@@ -1,10 +1,12 @@
 package com.martinzarev.weatherapp.Models.Weather;
 
+import java.io.Serializable;
+
 /**
  * Created by martin on 28.07.17.
  */
 
-public class Coordinates {
+public class Coordinates implements Serializable {
 
     private double lon;
 

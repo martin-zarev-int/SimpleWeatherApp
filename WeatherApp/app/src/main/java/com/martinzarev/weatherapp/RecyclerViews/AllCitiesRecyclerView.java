@@ -72,4 +72,29 @@ public class AllCitiesRecyclerView extends RecyclerView.Adapter<AllCitiesRecycle
             cityDegreesTV.setText(String.valueOf(currentDailyForecast.getMain().getTemp()));
         }
     }
+
+    public ArrayList<Integer> getAllIds(){
+        ArrayList<Integer> allIds = new ArrayList<>();
+
+        for(DailyForecast tempDailyForcast : dailyForecasts){
+            allIds.add(tempDailyForcast.getId());
+        }
+
+        return allIds;
+    }
+
+    public void addData(DailyForecast forecasts){
+        dailyForecasts.add(forecasts);
+        notifyDataSetChanged();
+    }
+
+    public void addData(ArrayList<DailyForecast> forecasts){
+        for(DailyForecast tempDailyForecast : forecasts){
+            addData(tempDailyForecast);
+        }
+    }
+
+    public void eraseData(){
+        dailyForecasts.clear();
+    }
 }

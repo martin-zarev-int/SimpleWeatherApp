@@ -71,8 +71,7 @@ public class SearchCitiesActivity extends AppCompatActivity {
                             gson.fromJson(response.toString(),SearchResponse.class);
 
 
-                    searchedCitiesRV.addData(null);
-                    searchedCitiesRV.notifyDataSetChanged();
+                    searchedCitiesRV.addData(dailyForecasts.getList());
                 }
             };
 
