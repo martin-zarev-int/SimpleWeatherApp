@@ -6,6 +6,8 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- RV related -->
+    <dimen name="title_text_size">24sp</dimen>
     <dimen name="main_text_size_rv">16sp</dimen>
     <dimen name="additional_text_size_rv">14sp</dimen>
+
 </resources>

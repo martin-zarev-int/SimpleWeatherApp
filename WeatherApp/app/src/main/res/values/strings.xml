@@ -1,14 +1,21 @@
 <resources>
     <string name="app_name">WeatherApp</string>
 
+    <string name="undo">UNDO</string>
+    <string name="temperature">Temperature</string>
+    <string name="humidity">Humidity</string>
+
+
     <!-- All cities screen related -->
     <string name="empty_list">The list of cities is empty</string>
+    <string name="deleted_city">City is deleted</string>
+    <string name="restored_city">City is restored</string>
+    <string name="maximum_allowed_cities">The maximum allowed count of cities is 20.</string>
 
 
     <!-- Search screen related -->
     <string name="city_name">City name</string>
     <string name="search">Search</string>
-
 
 
 </resources>

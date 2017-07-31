@@ -104,11 +104,11 @@ public class AllCitiesActivity extends AppCompatActivity {
                 if(citiesRV.getItemCount() == 0){
                     noCitiesAddedTextView.setVisibility(View.VISIBLE);
                 }
-                Snackbar snackbar = Snackbar.make(coordinatorLayout, "City is deleted", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+                Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.deleted_city, Snackbar.LENGTH_LONG).setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         citiesRV.addDataAtPosition(itemPosition, tempDeletedDailyForecast);
-                        Snackbar restoreSnackbar = Snackbar.make(coordinatorLayout,"City is restored", Snackbar.LENGTH_LONG);
+                        Snackbar restoreSnackbar = Snackbar.make(coordinatorLayout,R.string.restored_city, Snackbar.LENGTH_LONG);
                         restoreSnackbar.show();
                         noCitiesAddedTextView.setVisibility(View.GONE);
                         updateSavedCities();
@@ -127,7 +127,7 @@ public class AllCitiesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(citiesRV.getItemCount() == 20){
-                    Toast.makeText(getApplicationContext(),"The maximum allowed count of cities is 20.",Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(),R.string.maximum_allowed_cities,Toast.LENGTH_LONG);
                 }else{
                     Intent intent = new Intent(getApplicationContext(),SearchCitiesActivity.class);
                     startActivityForResult(intent,1);
@@ -140,21 +140,24 @@ public class AllCitiesActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 ArrayList<Integer> allCitiesIds = citiesRV.getAllIds();
+                if(allCitiesIds.size()==0){
+                    swipeRefreshLayout.setRefreshing(false);
+                }else{
+                    Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Gson gson = new Gson();
+                            SearchResponse dailyForecasts =
+                                    gson.fromJson(response.toString(),SearchResponse.class);
+                            swipeRefreshLayout.setRefreshing(false);
+                            citiesRV.eraseData();
+                            citiesRV.addData(dailyForecasts.getList());
+                        }
+                    };
 
-                Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Gson gson = new Gson();
-                        SearchResponse dailyForecasts =
-                                gson.fromJson(response.toString(),SearchResponse.class);
-                        swipeRefreshLayout.setRefreshing(false);
-                        citiesRV.eraseData();
-                        citiesRV.addData(dailyForecasts.getList());
-                    }
-                };
-
-                JsonObjectRequest allIdsRequest = RequestGeneator.generateLoadRequest(allCitiesIds, responseListener);
-                VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(allIdsRequest);
+                    JsonObjectRequest allIdsRequest = RequestGeneator.generateLoadRequest(allCitiesIds, responseListener);
+                    VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(allIdsRequest);
+                }
             }
         });
 
