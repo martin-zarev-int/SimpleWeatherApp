@@ -83,8 +83,13 @@ public class AllCitiesRecyclerView extends RecyclerView.Adapter<AllCitiesRecycle
         return allIds;
     }
 
-    public void addData(DailyForecast forecasts){
-        dailyForecasts.add(forecasts);
+    public void addData(DailyForecast forecast){
+        dailyForecasts.add(forecast);
+        notifyDataSetChanged();
+    }
+
+    public void addDataAtPosition( int position, DailyForecast forecast){
+        dailyForecasts.add(position,forecast);
         notifyDataSetChanged();
     }
 
@@ -96,6 +101,13 @@ public class AllCitiesRecyclerView extends RecyclerView.Adapter<AllCitiesRecycle
 
     public void eraseData(){
         dailyForecasts.clear();
+    }
+
+    public DailyForecast eraseAtPosition(int position){
+        DailyForecast tempDailyForecast = dailyForecasts.get(position);
+        dailyForecasts.remove(position);
+        notifyDataSetChanged();
+        return tempDailyForecast;
     }
 
     public ArrayList<DailyForecast> getAllData(){

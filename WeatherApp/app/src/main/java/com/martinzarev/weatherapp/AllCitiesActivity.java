@@ -3,13 +3,16 @@ package com.martinzarev.weatherapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -46,7 +49,7 @@ public class AllCitiesActivity extends AppCompatActivity {
 
     private SharedPreferences.Editor editor;
 
-
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class AllCitiesActivity extends AppCompatActivity {
         citiesRVHolder = (RecyclerView) findViewById(R.id.all_cities_recyclerView);
         fab = (FloatingActionButton) findViewById(R.id.all_cities_fab);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.all_cities_swipe_to_refresh);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.all_cities_coordinator_layout);
 
         //Setting up editor
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -79,12 +83,44 @@ public class AllCitiesActivity extends AppCompatActivity {
             savedDailyForecasts = gson.fromJson(savedCities,DailyForecast[].class);
             if(savedDailyForecasts != null && savedDailyForecasts.length>0){
                 noCitiesAddedTextView.setVisibility(View.GONE);
-                swipeRefreshLayout.setVisibility(View.VISIBLE);
             }
             for(DailyForecast tempSavedDailyForecast : savedDailyForecasts){
                 citiesRV.addData(tempSavedDailyForecast);
             }
         }
+
+        //Setting up swipe to delete
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                final int itemPosition = viewHolder.getAdapterPosition();
+                final DailyForecast tempDeletedDailyForecast = citiesRV.eraseAtPosition(itemPosition);
+                updateSavedCities();
+                if(citiesRV.getItemCount() == 0){
+                    noCitiesAddedTextView.setVisibility(View.VISIBLE);
+                }
+                Snackbar snackbar = Snackbar.make(coordinatorLayout, "City is deleted", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        citiesRV.addDataAtPosition(itemPosition, tempDeletedDailyForecast);
+                        Snackbar restoreSnackbar = Snackbar.make(coordinatorLayout,"City is restored", Snackbar.LENGTH_LONG);
+                        restoreSnackbar.show();
+                        noCitiesAddedTextView.setVisibility(View.GONE);
+                        updateSavedCities();
+                    }
+                });
+                snackbar.show();
+
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(citiesRVHolder);
+
 
         //Setting up fab
         fab.setOnClickListener(new View.OnClickListener() {
@@ -135,14 +171,18 @@ public class AllCitiesActivity extends AppCompatActivity {
             noCitiesAddedTextView.setVisibility(View.GONE);
             citiesRV.addData(addedDailyForecast);
 
-            ArrayList<DailyForecast> newestDailyForeCasts = citiesRV.getAllData();
-
-            Gson gson = new Gson();
-            String json = gson.toJson(newestDailyForeCasts);
-
-            editor.putString("SavedCities",json);
-            editor.apply();
+            updateSavedCities();
         }
+    }
+
+    private void updateSavedCities(){
+        ArrayList<DailyForecast> newestDailyForeCasts = citiesRV.getAllData();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(newestDailyForeCasts);
+
+        editor.putString("SavedCities",json);
+        editor.apply();
     }
 
 }
