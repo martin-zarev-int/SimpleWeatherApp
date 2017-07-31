@@ -127,7 +127,8 @@ public class AllCitiesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(citiesRV.getItemCount() == 20){
-                    Toast.makeText(getApplicationContext(),R.string.maximum_allowed_cities,Toast.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(coordinatorLayout,R.string.maximum_allowed_cities,Snackbar.LENGTH_LONG);
+                    snackbar.show();
                 }else{
                     Intent intent = new Intent(getApplicationContext(),SearchCitiesActivity.class);
                     startActivityForResult(intent,1);
