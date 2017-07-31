@@ -97,4 +97,9 @@ public class AllCitiesRecyclerView extends RecyclerView.Adapter<AllCitiesRecycle
     public void eraseData(){
         dailyForecasts.clear();
     }
+
+    public ArrayList<DailyForecast> getAllData(){
+        return dailyForecasts;
+    }
+
 }

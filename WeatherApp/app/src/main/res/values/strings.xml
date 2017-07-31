@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">WeatherApp</string>
 
+    <!-- All cities screen related -->
+    <string name="empty_list">The list of cities is empty</string>
+
+
+    <!-- Search screen related -->
     <string name="city_name">City name</string>
     <string name="search">Search</string>
+
+
+
 </resources>
